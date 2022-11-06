@@ -1,0 +1,95 @@
+{
+	"name": "vscode-wsl-workspacefolder",
+	"displayName": "WSL workspaceFolder",
+	"description": "Returns `workspaceFolder` as a WSL path.\n\nUseful where WSL format workspaceFolder path is required, e.g. for debug 'remoteRoot' property in launch config, etc.",
+	"version": "1.1.2",
+	"publisher": "lfurzewaddock",
+	"icon": "public/assets/images/vscode-wsl-workspacefolder.png",
+	"galleryBanner": {
+		"color": "#007ACC",
+		"theme": "dark"
+	},
+	"keywords": [
+		"WSL",
+		"workspaceFolder",
+		"path",
+		"WSL path format",
+		"Windows path format",
+		"multi-root ready"
+	],
+	"bugs": {
+		"url": "https://github.com/lfurzewaddock/vscode-wsl-workspacefolder/issues"
+	},
+	"homepage": "https://github.com/lfurzewaddock/vscode-wsl-workspacefolder/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lfurzewaddock/vscode-wsl-workspacefolder"
+	},
+	"engines": {
+		"vscode": "^1.18.1"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.vscode-wsl-workspaceFolder"
+	],
+	"main": "./lib",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.vscode-wsl-workspaceFolder",
+				"title": "WSL workspaceFolder"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run publish",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "./node_modules/.bin/tape --require esm test/{,**/}/*.test.js | tap-spec",
+		"debug": "DEBUG=vscode-wsl-workspacefolder:* node --nolazy --inspect-brk=5858 ./node_modules/.bin/tape --require esm test/{,**/}/*.test.js",
+		"testem": "testem -f testem.node.json",
+		"publish": "./node_modules/.bin/babel src --out-dir lib",
+		"babel": "./node_modules/.bin/babel src --out-dir lib --source-maps",
+		"lint": "node_modules/.bin/prettier-eslint \"*/**/*.js\" --log-level info",
+		"lintFix": "node_modules/.bin/prettier-eslint  \"*/**/*.js\" --write --log-level warn",
+		"coverage": "node_modules/nyc/bin/nyc.js --require esm --reporter=html tape test/{,**/}/*.test.js | tap-spec && ./bin/opn-cli coverage/index.html -- chrome"
+	},
+	"devDependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-plugin-add-module-exports": "^0.2.1",
+		"babel-plugin-transform-es2015-modules-umd": "^6.24.1",
+		"babel-preset-env": "^1.7.0",
+		"eslint": "^4.19.1",
+		"eslint-config-airbnb": "^17.0.0",
+		"eslint-plugin-import": "^2.13.0",
+		"eslint-plugin-jsx-a11y": "^6.1.0",
+		"eslint-plugin-react": "^7.10.0",
+		"esm": "^3.0.65",
+		"minimist": "^1.2.0",
+		"nyc": "^12.0.2",
+		"opn": "^5.3.0",
+		"prettier-eslint-cli": "^4.7.1",
+		"tap-spec": "^5.0.0",
+		"tape": "^4.9.1",
+		"tape-promise": "^3.0.0",
+		"testem": "^2.8.2"
+	},
+	"dependencies": {
+		"debug": "^3.1.0",
+		"execa": "^0.10.0",
+		"is-wsl": "^1.1.0",
+		"vscode": "^1.1.21"
+	},
+	"__metadata": {
+		"id": "d0c2b273-9cad-4046-82ff-8858bffc07d9",
+		"publisherId": "117d0a74-6b07-4b56-a8fe-93c2a36c7e50",
+		"publisherDisplayName": "lfurzewaddock",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"updated": false,
+		"isPreReleaseVersion": false,
+		"preRelease": false,
+		"installedTimestamp": 1665620387293
+	}
+}
