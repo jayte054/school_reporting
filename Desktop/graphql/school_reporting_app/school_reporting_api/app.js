@@ -5,7 +5,7 @@ const { graphqlHTTP } = require("express-graphql")
 const dotenv = require("dotenv")
 const database = require("./database")
 const graphqlSchema = require("./graphql/schemas/index")
-const graphqlResolver = require("./graphql/resolvers/auth.resolvers")
+const rootResolver = require("./graphql/resolvers/auth.resolvers")
 
 dotenv.config();
 // console.log(process.env.SECRET_KEY)
@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 
 app.use("/graphql", graphqlHTTP({
     schema: graphqlSchema,
-    rootValue: graphqlResolver,
+    rootValue: rootResolver,
     // graphiql: true
 }))
 

@@ -2,7 +2,7 @@ const User = require("../../models/user.model")
 const bcrypt = require("bcryptjs")
 const userJwt = require("../../helpers/jwt")
 
-module.exports = {
+const authResolver = {
     createUser: async(args) => {
         console.log("a")
         console.log(args.CreateUserInput.firstName)
@@ -93,3 +93,4 @@ module.exports = {
        
     }
 }
+module.exports = authResolver
