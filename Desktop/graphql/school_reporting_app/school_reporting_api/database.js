@@ -6,7 +6,12 @@ dotenv.config()
  const database =  async () => {
     try{
         await mongoose.connect(
-            `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@jayte.qifrq5d.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority&appName=jayte`
+            `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@jayte.qifrq5d.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority&appName=jayte`,
+            {
+                ssl: true,
+                tlsAllowInvalidCertificates: false,
+                tlsAllowInvalidHostnames: false,
+            }
         )
         
     }catch(error){

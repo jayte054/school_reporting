@@ -37,6 +37,7 @@ const authResolver = {
     },
 
     getUsers: async (req) => {
+        console.log("users")
         const result = await User.find()
         try{
             return result.map((user) => ({
@@ -91,6 +92,7 @@ const authResolver = {
             throw error
         }
        
-    }
+    },
+
 }
 module.exports = authResolver
