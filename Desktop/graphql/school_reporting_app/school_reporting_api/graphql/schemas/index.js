@@ -125,6 +125,7 @@ const SchoolReportsSchema = buildSchema(`
         updateTopic2(_id: ID!, topicInput: TopicInput): Topic!
         createSubject(subjectInput: SubjectInput!): Subject!
         updateSubject(_id: ID!, subjectInput: SubjectInput!): Subject!
+        deleteSubject(_id: ID!): Subject!
     }
 
     schema {

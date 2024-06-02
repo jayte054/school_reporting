@@ -219,9 +219,23 @@ const subjectResolver = {
                     {new: true}
                 )
 
+                if(!updatedSubject){
+                    throw new Error("failed to find subject")
+                }
+
             return updatedSubject
         }catch(error){
             console.log(error)
+        }
+    },
+
+    deleteSubject: async(_id) => {
+        try{
+            const subject = await Subject.findByIdAndDelete(_id)
+            return subject
+        }catch(error){
+            console.log(error)
+            throw new Error("failed to delete subject")
         }
     }
 
