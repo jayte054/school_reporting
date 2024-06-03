@@ -23,6 +23,7 @@ const SchoolReportsSchema = buildSchema(`
     }
 
     type Student {
+        _id: ID!
         firstName: String!
         lastName: String!
         class: String!
@@ -64,6 +65,14 @@ const SchoolReportsSchema = buildSchema(`
         lastName: String!
         class: String!
         age: Int!
+        grades: [GradeInput]
+    }
+
+    input updateStudentInput {
+        firstName: String
+        lastName: String
+        class: String
+        age: Int
         grades: [GradeInput]
     }
 
@@ -113,6 +122,9 @@ const SchoolReportsSchema = buildSchema(`
         getTopicById(_id: ID!): Topic!
         getSubjects: [Subject!]!
         getSubjectById(_id: ID!): Subject!
+        getStudents: [Student!]!
+        getStudentById(_id: ID!): Student!
+
     }
 
     type RootMutation {
@@ -126,6 +138,9 @@ const SchoolReportsSchema = buildSchema(`
         createSubject(subjectInput: SubjectInput!): Subject!
         updateSubject(_id: ID!, subjectInput: SubjectInput!): Subject!
         deleteSubject(_id: ID!): Subject!
+        createStudent(studentInput: StudentInput!): Student!
+        createBulkStudents(studentInput: [StudentInput!]!): [Student!]!
+        updateStudent(_id: ID!, studentInput: updateStudentInput!): Student
     }
 
     schema {

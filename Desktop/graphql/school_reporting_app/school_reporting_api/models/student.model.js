@@ -2,6 +2,25 @@ const mongoose = require("mongoose")
 
 const Schema = mongoose.Schema;
 
+const gradeSchema = new Schema({
+    assignments: {
+        type: Number,
+        required: false
+    },
+    classWork: {
+        type: Number,
+        required: false
+    },
+    test: {
+        type: Number,
+        required: false
+    },
+    exam: {
+        type: Number,
+        required: false
+    }
+}, {timestamps: true})
+
 const studentSchema = new Schema({
     firstName: {
         type: String,
@@ -19,10 +38,7 @@ const studentSchema = new Schema({
         type: String,
         required: true
     },
-    grades: {
-        type: Schema.Types.ObjectId,
-        ref: "Grades"
-    },
+    grades: [gradeSchema],
     score: {
         type: Number,
         required: true
