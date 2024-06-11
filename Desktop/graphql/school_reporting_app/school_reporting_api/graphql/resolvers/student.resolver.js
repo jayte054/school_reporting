@@ -127,35 +127,55 @@ const studentResolver = {
             const updateField = {}
 
             const student = await Student.findById(_id)
-            const grades = studentInput.grades ?studentInput.grades.map(grade => ({
-                assignments: grade.assignments || student.grades.assignments,
-                classWork: grade.classWork || student.grades.classWork,
-                test: grade.test || student.grades.test,
-                exam: grade.exam || student.grades.exam
+
+            if(!student) {
+                throw new Error("student not found")
+            }
+
+            const grades = studentInput.grades ? studentInput.grades.map((grade, index) => ({
+                assignments: grade.assignments !== undefined ? grade.assignments : (student.grades[index]?.assignments) || 0,
+                classWork: grade.classWork !==undefined ? grade.classWork : (student.grades[index]?.classWork) || 0,
+                test: grade.test !== undefined ? grade.test : (student.grades[index]?.test) || 0,
+                exam: grade.exam !== undefined ? grade.exam : (student.grades[index]?.exam) || 0
             })): student.grades
 
-            const totalScore = studentInput.grades ? studentInput.grades.reduce((sum, grade) => 
-                sum + grade.assignments + grade.classWork + grade.test + grade.exam, 0
-            ): student.score
+            console.log(grades[0].assignments)
 
-             if(studentInput.firstName !== undefined) {
-                updateField.firstName = studentInput.firstName || student.firstName
-             }
-             if(studentInput.lastName !== undefined) {
-                updateField.lastName = studentInput.lastName || student.lastName
-             }
-             if(studentInput.class !== undefined) {
-                updateField.class = studentInput.class || student.class
-             }
-             if(studentInput.age !== undefined) {
-                updateField.age = studentInput.age || student.age
-             }
-             if(studentInput.grades !== undefined) {
-                updateField.grades = grades
-             }
-             if(studentInput.score !== undefined) {
-                updateField.score = totalScore
-             }
+            const gradesScore = grades[0].assignments + grades[0].classWork + grades[0].test + grades[0].exam
+            console.log(gradesScore)
+            const totalScore =  gradesScore  ;
+            console.log("totalScore", totalScore)
+
+            //  if(studentInput.firstName !== undefined) {
+            //     updateField.firstName = studentInput.firstName || student.firstName
+            //  }
+            //  if(studentInput.lastName !== undefined) {
+            //     updateField.lastName = studentInput.lastName || student.lastName
+            //  }
+            //  if(studentInput.class !== undefined) {
+            //     updateField.class = studentInput.class || student.class
+            //  }
+            //  if(studentInput.age !== undefined) {
+            //     updateField.age = studentInput.age || student.age
+            //  }
+            //  if(studentInput.grades !== undefined) {
+            //     updateField.grades = grades
+            //  }
+            //  if(studentInput.score !== undefined) {
+            //     updateField.score = totalScore
+            //  }
+
+            Object.keys(studentInput).forEach(key => {
+                if((key === "grades") && studentInput[key] !== undefined){
+                    updateField[key] = grades
+                } else if(studentInput[key] !== undefined) {
+                    updateField[key] = studentInput[key]
+                }
+            });
+
+            updateField["score"] = totalScore
+            
+            console.log(updateField)
         
 
             const updatedStudent = await Student.findByIdAndUpdate(_id, 
