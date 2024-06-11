@@ -81,9 +81,16 @@ const SchoolReportsSchema = buildSchema(`
         className: String!
         numberOfStudents: Int!
         classTeacher: String!
-        classCaptain: String!
-        
+        classCaptain: String!   
     }
+
+    input UpdateClassInput {
+        className: String
+        numberOfStudents: Int
+        classTeacher: String
+        classCaptain: String 
+    }
+
     input CreateUserInput  {
         firstName: String!,
         lastName: String!,
@@ -141,6 +148,7 @@ const SchoolReportsSchema = buildSchema(`
         createStudent(studentInput: StudentInput!): Student!
         createBulkStudents(studentInput: [StudentInput!]!): [Student!]!
         updateStudent(_id: ID!, studentInput: updateStudentInput!): Student
+        updateClass(_id: ID!, classInput: UpdateClassInput!): Class
     }
 
     schema {
