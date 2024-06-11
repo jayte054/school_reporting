@@ -1,5 +1,6 @@
 const Topics = require("../../models/topic.model")
 const Subject = require("../../models/subjects.model")
+const Class = require("../../models/class.model")
 
 const subjectResolver = {
     createTopic: async(args) => {
@@ -145,7 +146,14 @@ const subjectResolver = {
                 subjectName: args.subjectInput.subjectName,
                 topics: newTopics
             })
-            const subject = newSubject.save()
+            const subject = await newSubject.save()
+            
+            const classSubjects = await Class.findOne({
+                className: subject.topics[0].class
+            })
+            console.log(classSubjects)
+            classSubjects.subjects.push(subject)
+            await classSubjects.save()
             return subject
         }catch(error){
             console.log(error)

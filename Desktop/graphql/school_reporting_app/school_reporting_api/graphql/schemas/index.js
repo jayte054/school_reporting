@@ -33,12 +33,13 @@ const SchoolReportsSchema = buildSchema(`
     }
 
     type Class {
+        _id: ID!
         className: String!
         numberOfStudents: Int!
         classTeacher: String!
         classCaptain: String!
-        students: [Student!]!
-        subjects: [Subject!]!
+        students: [Student]
+        subjects: [Subject]
     }
 
     input TopicInput {
@@ -81,8 +82,7 @@ const SchoolReportsSchema = buildSchema(`
         numberOfStudents: Int!
         classTeacher: String!
         classCaptain: String!
-        students: [StudentInput]
-        subjects: [SubjectInput!]!
+        
     }
     input CreateUserInput  {
         firstName: String!,
@@ -124,12 +124,12 @@ const SchoolReportsSchema = buildSchema(`
         getSubjectById(_id: ID!): Subject!
         getStudents: [Student!]!
         getStudentById(_id: ID!): Student!
-
+        getClasses: [Class!]!
     }
 
     type RootMutation {
         createUser(CreateUserInput: CreateUserInput): User
-        createClass(ClassInput: ClassInput): Class
+        createClass(ClassInput: ClassInput!): Class!
         createTopic(TopicInput: TopicInput): Topic!
         createMultipleTopics(TopicInput: [TopicInput!]!): [Topic!]!
         deleteTopic(_id: ID!): Topic!

@@ -19,14 +19,14 @@ const classSchema = new Schema({
         type: String,
         required: true
     },
-    students: {
+    students: [{
         type: Schema.Types.ObjectId,
         ref: "Student"
-    },
-    subjects: {
+    }],
+    subjects: [{
         type: Schema.Types.ObjectId,
         ref: "Subject"
-    }
+    }]
 
 }, {timestamps: true})
 

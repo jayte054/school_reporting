@@ -1,4 +1,5 @@
 const Student = require("../../models/student.model")
+const Class = require("../../models/class.model")
 
 const studentResolver = {
     createStudent: async({studentInput}) => {
@@ -21,8 +22,19 @@ const studentResolver = {
                 grades: grades,
                 score: totalScore
             })
-    
+
             const newStudent = await student.save()
+            console.log(newStudent)
+
+            const studentClass = await Class.findOne({className: student.class})
+            if(!studentClass) {
+                throw new Error("class not found")
+            }
+            studentClass.students.push(student)
+            studentClass.numberOfStudents += 1
+            await studentClass.save()
+            console.log(studentClass)
+            
             return newStudent
         }catch(error){
             console.log(error)
@@ -174,7 +186,7 @@ const studentResolver = {
             });
 
             updateField["score"] = totalScore
-            
+
             console.log(updateField)
         
 
