@@ -12,7 +12,19 @@ const userJwt = async({userId, email, role}) => {
     try{
         const user = await User.findOne({userId, email, role});
 
-        const token = jwt.sign({userId: user._id, email: user.email, role: user.role}, process.env.SECRET_KEY, {
+        if(!user) {
+            throw new Error("User not found")
+        }
+
+        const token = jwt.sign({
+            userId: user._id, 
+            firstName: user.firstName, 
+            lastName: user.lastName, 
+            email: user.email, 
+            role: user.role
+        }, 
+        process.env.SECRET_KEY, 
+        {
             expiresIn: "2h"
         })
         return token

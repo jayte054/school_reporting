@@ -2,7 +2,10 @@ const Student = require("../../models/student.model")
 const Class = require("../../models/class.model")
 
 const studentResolver = {
-    createStudent: async({studentInput}) => {
+    createStudent: async({studentInput}, context) => {
+        if(!context.isAdmin){
+            throw new Error("user is not admin")
+        }
         try{
             const grades = studentInput.grades ? studentInput.grades.map(grade => ({
                 assignments: grade.assignments || 0,
@@ -43,10 +46,11 @@ const studentResolver = {
         
     },
 
-    createBulkStudents: async({studentInput}) => {
+    createBulkStudents: async({studentInput}, context) => {
+        if(!context.isAdmin){
+            throw new Error("user is not admin")
+        }
         try{
-            
-
             const students = studentInput.map(student => {
 
                 const grades = student.grades ? student.grades.map(grade => ({
@@ -72,6 +76,22 @@ const studentResolver = {
             })
 
             const bulkStudents = await Student.insertMany(students)
+
+            //extract classnames
+            const classNames = [...new Set(students.map(student => student.class))]
+
+            //iterate over each class and update their students
+            for(const className of classNames){
+                const _class = await Class.findOne({className: className})
+
+                if(_class){
+                    const classStudents = bulkStudents.filter(student => student.class === className)
+                    const _classStudents = classStudents.map(student => student._id)
+                    _class.students.push(..._classStudents);
+                    _class.numberOfStudents += classStudents.length
+                    await _class.save()
+                }
+            }
             return bulkStudents
 
         }catch(error){
@@ -114,9 +134,17 @@ const studentResolver = {
     //     }
     // }
 
-    getStudents: async() => {
+    getStudents: async(args, context) => {
+        if(!context.isAdmin){
+            throw new Error("user is not admin")
+        }
         try{
             const students = await Student.find()
+            students.sort((a,b) =>{
+                if(a.class < b.class) return -1
+                if(a.class > b.class) return 1
+                return 0
+            })
             return students
         }catch(error){
             console.log(students)
@@ -124,7 +152,11 @@ const studentResolver = {
         }
     },
 
-    getStudentById: async(_id) => {
+    getStudentById: async(_id, context) => {
+        if(!context.isAdmin){
+            throw new Error("user is not Admin")
+        }
+
         try{
             const student = await Student.findById(_id)
             return student
@@ -134,7 +166,10 @@ const studentResolver = {
         }
     },
 
-    updateStudent: async({_id, studentInput}) => {
+    updateStudent: async({_id, studentInput}, context) => {
+        if(!context.isAuth){
+            throw new Error("user is not authenticated")
+        }
         try{
             const updateField = {}
 
@@ -202,7 +237,10 @@ const studentResolver = {
         }
     },
 
-    deleteStudent: async(_id) => {
+    deleteStudent: async(_id, context) => {
+        if(!context.isAdmin){
+            throw new Error("user is not an admin")
+        }
         try{
             const student = await Student.findByIdAndDelete(_id)
             return student

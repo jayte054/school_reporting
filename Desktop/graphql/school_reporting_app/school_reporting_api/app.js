@@ -7,6 +7,9 @@ const database = require("./database")
 const graphqlSchema = require("./graphql/schemas/index")
 const rootResolver = require("./graphql/resolvers/index")
 const SchoolReportsSchema = require("./graphql/schemas/index")
+const isAuth = require("./middlewares/is-auth")
+const contextHelper = require("./helpers/contexthelper")
+
 
 dotenv.config();
 // console.log(process.env.SECRET_KEY)
@@ -21,11 +24,19 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use("/graphql", graphqlHTTP({
-    schema: SchoolReportsSchema,
+app.use(isAuth)
+
+// app.use("/graphql", graphqlHTTP({
+//     schema: SchoolReportsSchema,
+//     rootValue: rootResolver,
+//     // graphiql: true
+// }))
+
+app.use('/graphql', graphqlHTTP((req) => ({
+    schema: graphqlSchema,
     rootValue: rootResolver,
-    // graphiql: true
-}))
+    context: contextHelper(req)
+})));
 
 if(database) {
     console.log("database connection successful")

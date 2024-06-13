@@ -25,7 +25,11 @@ const {classTransform, getSubject} = require("../../helpers/resolverHelpers")
 
 
 const classResolver = {
-    createClass: async({ClassInput}) => {
+    createClass: async({ClassInput}, context) => {
+        if(!context.isAuth){
+            throw new Error("user is not authenticated")
+        }
+
         try{
             const newClass = new Class({
             className: ClassInput.className,
@@ -42,7 +46,29 @@ const classResolver = {
     }
     },
 
-    getClasses: async() => {
+    getClass: async(args, context) => {
+        if(!context.isAuth){
+            throw new Error("user not authenticated")
+        }
+
+        try{
+            const teacher = context.firstName + " " + context.lastName;
+            const _class = await Class.findOne({
+                classTeacher: teacher
+            })
+            return _class
+        }catch(error){
+            console.log(error)
+            throw new Error("failed to get class")
+        }
+    },
+
+    getClasses: async(args, context) => {
+       
+        if(!context.isAdmin){
+            throw new Error("User is not admin")
+        }
+
         try{
             const classes  = await Class.find()
             console.log(classes)
@@ -55,7 +81,10 @@ const classResolver = {
         }
     },
 
-    updateClass: async({_id, classInput}) => {
+    updateClass: async({_id, classInput}, context) => {
+        if(!context.isAuth){
+            throw new Error("user is not authenticated")
+        }
         try{
             const updateField = {}
             const _class = await Class.findById(_id)
@@ -72,6 +101,10 @@ const classResolver = {
             // if(classInput.classCaptain !== undefined) {
             //     updateField.classCaptain = classInput.classCaptain || _class.classCaptain
             // }
+            
+            if(context.firstName !== _class.classTeacher.split(" ")[0]){
+                throw new Error("Teacher not authorized for this class")
+            }
 
             Object.keys(classInput).forEach(key => {
                 if(classInput[key] !== undefined) {
@@ -90,7 +123,10 @@ const classResolver = {
         }
     },
 
-    deleteClass: async(_id) => {
+    deleteClass: async(_id, context) => {
+        if(!context.isAdmin){
+            throw new Error("only an admin can delete a class")
+        }
         try{
             const _class = await Class.findByIdAndDelete(_id)
             return _class

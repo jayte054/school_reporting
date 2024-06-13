@@ -32,6 +32,8 @@ const SchoolReportsSchema = buildSchema(`
         score: Float
     }
 
+    
+
     type Class {
         _id: ID!
         className: String!
@@ -128,10 +130,12 @@ const SchoolReportsSchema = buildSchema(`
         getTopics: [Topic!]!
         getTopicById(_id: ID!): Topic!
         getSubjects: [Subject!]!
+        getSubjectsByClass(_class: String): [Subject]
         getSubjectById(_id: ID!): Subject!
         getStudents: [Student!]!
         getStudentById(_id: ID!): Student!
         getClasses: [Class!]!
+        getClass: Class!
     }
 
     type RootMutation {

@@ -3,10 +3,10 @@ const Subject = require("../../models/subjects.model")
 const Class = require("../../models/class.model")
 
 const subjectResolver = {
-    createTopic: async(args) => {
-        console.log("s")
-        console.log(args.TopicInput.topicTitle)
-        console.log("d")
+    createTopic: async(args, context) => {
+        if(!context.isAuth){
+            throw new Error("user is not authenticated")
+        }
         try{
             const topic = new Topics({
                 topicTitle: args.TopicInput.topicTitle,
@@ -28,7 +28,10 @@ const subjectResolver = {
         }
     },
     
-    createMultipleTopics: async ({TopicInput}) => {
+    createMultipleTopics: async ({TopicInput}, context) => {
+        if(!context.isAuth){
+            throw new Error("user not authenticated")
+        }
         try{
             const createMultipleTopics = TopicInput.map(topic => ({
                     topicTitle: topic.topicTitle,
@@ -43,7 +46,11 @@ const subjectResolver = {
         }
     },
     
-    getTopics: async() => {
+    getTopics: async(args, context) => {
+        if(!context.isAuth){
+            throw new Error("user not authenticated")
+        }
+
         try{
             const topics = await Topics.find()
             return topics
@@ -52,7 +59,10 @@ const subjectResolver = {
         }
     },
 
-    getTopicById: async({_id}) => {
+    getTopicById: async({_id}, context) => {
+        if(!context.isAuth){
+            throw new Error("user not authenticated")
+        }
         try{
             const topic = await Topics.findById(_id)
             return topic
@@ -61,7 +71,10 @@ const subjectResolver = {
         }
     },
 
-    deleteTopic: async({_id}) => {
+    deleteTopic: async({_id}, context) => {
+        if(!context.isAdmin){
+            throw new Error("user is not admin")
+        }
         try{
             console.log(_id)
             const topic = await Topics.findByIdAndDelete(_id)
@@ -77,7 +90,10 @@ const subjectResolver = {
         }
     },
 
-    updateTopic1: async({_id, TopicInput}) => {
+    updateTopic1: async({_id, TopicInput}, context) => {
+        if(!context.isAdmin){
+            throw new Error("user is not admin")
+        }
         try{
             const topic = await Topics.findByIdAndUpdate(_id, {
                 topicTitle: TopicInput.topicTitle,
@@ -95,7 +111,10 @@ const subjectResolver = {
         }
     },
 
-    updateTopic2: async({_id, topicInput}) => {
+    updateTopic2: async({_id, topicInput}, context) => {
+        if(!context.isAdmin){
+            throw new Error("user is not admin")
+        }
         try{
             const updateField = {}
             // if(topicInput.topicTitle !== undefined) {
@@ -133,7 +152,10 @@ const subjectResolver = {
         }
     },
 
-    createSubject: async(args) => {
+    createSubject: async(args, context) => {
+        if(!context.isAuth){
+            throw new Error("user is not authenticated")
+        }
         try{
             const newTopics = args.subjectInput.topics.map(topic => ({    
                     topicTitle: topic.topicTitle,
@@ -147,7 +169,7 @@ const subjectResolver = {
                 topics: newTopics
             })
             const subject = await newSubject.save()
-            
+
             const classSubjects = await Class.findOne({
                 className: subject.topics[0].class
             })
@@ -160,7 +182,10 @@ const subjectResolver = {
         }
     },
 
-    getSubjects: async() => {
+    getSubjects: async(args, context) => {
+        if(!context.isAuth){
+            throw new Error("user is not authenticated")
+        }
         try{
             const subjects = await Subject.find()
             return subjects
@@ -169,7 +194,10 @@ const subjectResolver = {
         }
     },
 
-    getSubjectById: async(_id) => {
+    getSubjectById: async(_id, context) => {
+        if(!context.isAuth){
+            throw new Error("user is not authenticated")
+        }
         try{
             const subject = await Subject.findById(_id);
             return subject
@@ -178,7 +206,10 @@ const subjectResolver = {
         }
     },
 
-    updateSubject: async({_id, subjectInput}) => {
+    updateSubject: async({_id, subjectInput}, context) => {
+        if(!context.isAuth){
+            throw new Error("user is not authenticated")
+        }
         try{
             // update all fields
             // const topics = subjectInput.map(topic => ({
@@ -237,7 +268,10 @@ const subjectResolver = {
         }
     },
 
-    deleteSubject: async(_id) => {
+    deleteSubject: async(_id, context) => {
+        if(!context.isAdmin) {
+            throw new Error("user is not admin")
+        }
         try{
             const subject = await Subject.findByIdAndDelete(_id)
             return subject
@@ -245,15 +279,27 @@ const subjectResolver = {
             console.log(error)
             throw new Error("failed to delete subject")
         }
-    }
+    },
 
-    // getSubectsByClass: async(class) => {
-    //     try{
-    //         const subjects = await subject. 
-    //     }catch(error){
-    //         console.log(error)
-    //     }
-    // }
+    getSubjectsByClass: async(_class, context) => {
+        console.log("ddd")
+        if(!context.isAuth){
+            throw new Error("user is not authenticated")
+        }
+        
+        try{
+            console.log("ddd")
+            const allSubjects = await Subject.find()
+            console.log("ddd")
+            console.log(allSubjects)
+            
+            const subjects = allSubjects.filter(subject => _class !== subject.topics.class )
+            console.log(subjects)
+            return subjects
+        }catch(error){
+            console.log(error)
+        }
+    }
 
 }
 

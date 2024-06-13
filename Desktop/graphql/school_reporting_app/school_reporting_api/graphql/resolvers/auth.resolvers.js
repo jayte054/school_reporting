@@ -36,7 +36,16 @@ const authResolver = {
         }
     },
 
-    getUsers: async (req) => {
+    getUsers: async (args, context) => {
+        if(!context.isAuth){
+            console.log("isAuth:", req.isAuth)
+            throw new Error("user is not authenticated")
+        }
+        if(!context.isAdmin){
+            console.log( "isAdmin:", req.isAdmin)
+            throw new Error("user is not an admin")
+        }
+
         console.log("users")
         const result = await User.find()
         try{
