@@ -26,6 +26,10 @@ const subjectSchema = new Schema({
         type: String,
         required: true
     },
+    className: {
+        type: String,
+        required: true
+    },
     topics: [topicSchema]
 }, {timestamps: true})
 

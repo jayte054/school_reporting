@@ -166,6 +166,7 @@ const subjectResolver = {
 
             const newSubject = new Subject({
                 subjectName: args.subjectInput.subjectName,
+                className: args.subjectInput.className,
                 topics: newTopics
             })
             const subject = await newSubject.save()
@@ -281,8 +282,7 @@ const subjectResolver = {
         }
     },
 
-    getSubjectsByClass: async(_class, context) => {
-        console.log("ddd")
+    getSubjectsByClass: async({className}, context) => {
         if(!context.isAuth){
             throw new Error("user is not authenticated")
         }
@@ -290,12 +290,13 @@ const subjectResolver = {
         try{
             console.log("ddd")
             const allSubjects = await Subject.find()
-            console.log("ddd")
-            console.log(allSubjects)
-            
-            const subjects = allSubjects.filter(subject => _class !== subject.topics.class )
-            console.log(subjects)
-            return subjects
+            const result = []
+            allSubjects.forEach(subject => {
+                if(subject.className === className.className){
+                    result.push(subject)
+                }
+            })
+            return result
         }catch(error){
             console.log(error)
         }

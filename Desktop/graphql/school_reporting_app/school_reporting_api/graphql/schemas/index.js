@@ -12,6 +12,7 @@ const SchoolReportsSchema = buildSchema(`
     type Subject {
         _id: ID!
         subjectName: String!
+        className: String!
         topics: [Topic!]!
     }
 
@@ -53,6 +54,7 @@ const SchoolReportsSchema = buildSchema(`
 
     input SubjectInput {
         subjectName: String!
+        className: String!
         topics: [TopicInput!]!
     }
 
@@ -130,7 +132,7 @@ const SchoolReportsSchema = buildSchema(`
         getTopics: [Topic!]!
         getTopicById(_id: ID!): Topic!
         getSubjects: [Subject!]!
-        getSubjectsByClass(_class: String): [Subject]
+        getSubjectsByClass(className: String): [Subject!]!
         getSubjectById(_id: ID!): Subject!
         getStudents: [Student!]!
         getStudentById(_id: ID!): Student!
