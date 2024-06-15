@@ -42,7 +42,36 @@ const studentSchema = new Schema({
     score: {
         type: Number,
         required: true
+    }, 
+    address: {
+        type: String,
+        required: true
+    },
+    father: {
+        type: String,
+        require: false
+    },
+    fatherPhoneNumber: {
+        type: Number,
+        required: false
+    },
+    fatherEmail: {
+        type: String,
+        required: false
+    },
+    mother: {
+        type: String,
+        required: false
+    },
+    motherPhoneNumber: {
+        type: Number,
+        required: false
+    },
+    motherEmail: {
+        type: String,
+        required: false
     }
+
 
 }, {timesstamps: true})
 

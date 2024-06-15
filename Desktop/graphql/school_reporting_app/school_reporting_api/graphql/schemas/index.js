@@ -31,9 +31,31 @@ const SchoolReportsSchema = buildSchema(`
         age: Int!
         grades: [Grade]
         score: Float
+        address: String!
+        father: String
+        fatherPhoneNumber: Int
+        fatherEmail: String
+        mother: String
+        motherPhoneNumber: Int
+        motherEmail: String
     }
 
-    
+    type Subjects {
+        _id: ID!
+        subjectName: String
+        assignments: Int
+        classWork: Int
+        test: Int
+        exam: Int
+        totalScore: Int
+    }
+
+    type StudentGrade {
+        _id: ID!
+        studentName: String!
+        className: String!
+        subjects: [Subjects!]!
+    }
 
     type Class {
         _id: ID!
@@ -43,6 +65,26 @@ const SchoolReportsSchema = buildSchema(`
         classCaptain: String!
         students: [Student]
         subjects: [Subject]
+    }
+
+    input SubjectsInput {
+        subjectName: String
+        assignments: Int
+        classWork: Int
+        test: Int
+        exam: Int
+    }
+
+    input StudentGradeInput {
+        studentName: String!
+        className: String!
+        subjects: [SubjectsInput!]!
+    }
+
+    input updateStudentGradeInput {
+        studentName: String
+        className: String
+        subjects: [SubjectsInput!]!
     }
 
     input TopicInput {
@@ -71,6 +113,12 @@ const SchoolReportsSchema = buildSchema(`
         class: String!
         age: Int!
         grades: [GradeInput]
+        father: String
+        fatherPhoneNumber: Int
+        fatherEmail: String
+        mother: String
+        motherPhoneNumber: Int
+        motherEmail: String
     }
 
     input updateStudentInput {
@@ -138,6 +186,8 @@ const SchoolReportsSchema = buildSchema(`
         getStudentById(_id: ID!): Student!
         getClasses: [Class!]!
         getClass: Class!
+        getStudentGrades: [StudentGrade!]!
+        getStudentGradeById(_id: ID!): StudentGrade!
     }
 
     type RootMutation {
@@ -155,6 +205,8 @@ const SchoolReportsSchema = buildSchema(`
         createBulkStudents(studentInput: [StudentInput!]!): [Student!]!
         updateStudent(_id: ID!, studentInput: updateStudentInput!): Student
         updateClass(_id: ID!, classInput: UpdateClassInput!): Class
+        createStudentGrades(studentGradeInput: StudentGradeInput): StudentGrade!
+        updateStudentGrades(_id: ID!, studentGradeInput: updateStudentGradeInput): StudentGrade!
     }
 
     schema {

@@ -23,7 +23,13 @@ const studentResolver = {
                 age: studentInput.age,
                 class: studentInput.class,
                 grades: grades,
-                score: totalScore
+                score: totalScore,
+                father: studentInput.father,
+                fatherPhoneNumber: studentInput.fatherPhoneNumber,
+                fatherEmail: studentInput.fatherEmail,
+                mother: studentInput.email,
+                motherPhoneNumber: studentInput.motherPhoneNumber,
+                motherEmail: studentInput.motherEmail
             })
 
             const newStudent = await student.save()
@@ -70,7 +76,13 @@ const studentResolver = {
                     age: student.age,
                     class: student.class,
                     grades: grades,
-                    score: totalScore
+                    score: totalScore,
+                    father: student.father,
+                    fatherPhoneNumber: student.fatherPhoneNumber,
+                    fatherEmail: student.fatherEmail,
+                    mother: student.email,
+                    motherPhoneNumber: student.motherPhoneNumber,
+                    motherEmail: student.motherEmail
                 })
              
             })
@@ -145,9 +157,9 @@ const studentResolver = {
                 if(a.class > b.class) return 1
                 return 0
             })
+            console.log(students)
             return students
         }catch(error){
-            console.log(students)
             throw new Error("failed to fetch students")
         }
     },
