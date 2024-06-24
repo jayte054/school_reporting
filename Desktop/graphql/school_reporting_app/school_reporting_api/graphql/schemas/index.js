@@ -67,6 +67,31 @@ const SchoolReportsSchema = buildSchema(`
         subjects: [Subject]
     }
 
+    type Subscription {
+        messageRecieved(userId: ID!): String
+    }
+
+    type MessageResponse {
+        messageId: ID
+        success: Boolean
+    }
+
+    type Message {
+        messageId: ID!
+        body: String
+    }
+
+    input sendMessageInput {
+        senderUserId: String!
+        recipientUserId: String!
+        messageBody: String!
+    }
+
+    input recieveMessageInput {
+        userId : ID!
+        maxMessages: Int = 1
+    }
+
     input SubjectsInput {
         subjectName: String
         assignments: Int
@@ -188,6 +213,9 @@ const SchoolReportsSchema = buildSchema(`
         getClass: Class!
         getStudentGrades: [StudentGrade!]!
         getStudentGradeById(_id: ID!): StudentGrade!
+        getStudentGradesByName(studentName: String): StudentGrade!
+        receiveMessageFromUser(RecieveMessageInput: recieveMessageInput): [Message!]!
+        ReceiveMessageFromUser(RecieveMessageInput: recieveMessageInput): [Message!]!
     }
 
     type RootMutation {
@@ -207,11 +235,15 @@ const SchoolReportsSchema = buildSchema(`
         updateClass(_id: ID!, classInput: UpdateClassInput!): Class
         createStudentGrades(studentGradeInput: StudentGradeInput): StudentGrade!
         updateStudentGrades(_id: ID!, studentGradeInput: updateStudentGradeInput): StudentGrade!
+        deleteStudentGrades(_id: ID!): StudentGrade!
+        sendMessageToUser(SendMessageInput: sendMessageInput): MessageResponse!
+        SendMessageToUser(SendMessageInput: sendMessageInput): MessageResponse!
     }
 
     schema {
         query: RootQuery
-        mutation: RootMutation,
+        mutation: RootMutation
+        subscription: Subscription
     }
 `)
 

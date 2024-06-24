@@ -88,6 +88,7 @@ const studentGradesResolver = {
 
             const subject = studentGradeInput.subjects ? studentGradeInput.subjects.map((subject, index) => {
                 const existingSubject = student.subjects[index] || {};
+                
                 const assignments = subject.assignments !== undefined ? subject.assignments : existingSubject.assignments || 0;
                 const classWork = subject.classWork !== undefined ? subject.classWork : existingSubject.classWork || 0;
                 const test = subject.test !== undefined ? subject.test : existingSubject.test || 0;
@@ -122,6 +123,37 @@ const studentGradesResolver = {
         }catch(error){
             console.log(error)
             throw new Error("failed to updated student")
+        }
+    },
+
+    deleteStudentGrades: async({_id}, context) => {
+        if(!context.admin) {
+            throw new Error("user is not admin")
+        }
+
+        try{
+            const studentGrade = await StudentsGrades.findByIdAndDelete(_id)
+            return studentGrade
+        }catch(error){
+            console.log(error)
+            throw new Error("request to delete student grades failed")
+        }
+    },
+
+    getStudentGradesByName: async({studentName}, context) => {
+        if(!context.isAuth) {
+            throw new Error("user is not authenticated")
+        }
+
+        try{
+           
+            const studentsGrade = await StudentsGrades.findOne({studentName});
+            console.log(studentsGrade)
+            return studentsGrade
+
+        }catch(error){
+            console.log(error)
+            throw new Error("failed to fetch studentGrade ")
         }
     }
 }
