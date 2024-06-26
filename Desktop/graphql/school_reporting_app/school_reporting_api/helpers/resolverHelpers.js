@@ -1,3 +1,4 @@
+const DataLoader = require("dataloader")
 const Subject = require("../models/subjects.model")
 const Student = require("../models/student.model")
 
@@ -10,18 +11,24 @@ const classTransform = async( classDoc ) => {
     }
 }
 
-const getSubject = async(subjectId) => {
-    // console.log("ddd")
-    const subjects = await Subject.find({_id : {$in: subjectId }})
-    // console.log("ggg",subjects)
+// const getSubject = async(subjectId) => {
+//     const subjects = await Subject.find({_id : {$in: subjectId }})
+//     return subjects
+// }
+const getSubject = new DataLoader(async(subjectId) => {
+    const subjects = await Subject.find({_id : {$in: subjectId}})
     return subjects
-}
+})
 
-const getStudent = async(studentId) => {
+// const getStudent = async(studentId) => {
+//     const student = await Student.find({_id: {$in: studentId}})
+//     console.log(student)
+//     return student
+// }
+const getStudent = new DataLoader(async(studentId) => {
     const student = await Student.find({_id: {$in: studentId}})
-    console.log(student)
     return student
-}
+})
 
 
 
