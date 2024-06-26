@@ -33,10 +33,10 @@ const SchoolReportsSchema = buildSchema(`
         score: Float
         address: String!
         father: String
-        fatherPhoneNumber: Int
+        fatherPhoneNumber: String
         fatherEmail: String
         mother: String
-        motherPhoneNumber: Int
+        motherPhoneNumber: String
         motherEmail: String
     }
 
@@ -139,10 +139,10 @@ const SchoolReportsSchema = buildSchema(`
         age: Int!
         grades: [GradeInput]
         father: String
-        fatherPhoneNumber: Int
+        fatherPhoneNumber: String
         fatherEmail: String
         mother: String
-        motherPhoneNumber: Int
+        motherPhoneNumber: String
         motherEmail: String
         address: String!
     }

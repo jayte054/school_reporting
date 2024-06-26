@@ -52,7 +52,7 @@ const studentSchema = new Schema({
         require: false
     },
     fatherPhoneNumber: {
-        type: Number,
+        type: String,
         required: false
     },
     fatherEmail: {
@@ -64,7 +64,7 @@ const studentSchema = new Schema({
         required: false
     },
     motherPhoneNumber: {
-        type: Number,
+        type: String,
         required: false
     },
     motherEmail: {

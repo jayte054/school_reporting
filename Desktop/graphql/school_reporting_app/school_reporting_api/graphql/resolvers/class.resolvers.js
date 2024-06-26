@@ -53,10 +53,15 @@ const classResolver = {
 
         try{
             const teacher = context.firstName + " " + context.lastName;
-            const _class = await Class.findOne({
+            console.log(teacher)
+            const theClass = await Class.findOne({
                 classTeacher: teacher
             })
-            return _class
+            
+            // console.log(theClass)
+            const result = await classTransform(theClass)
+            return result
+           
         }catch(error){
             console.log(error)
             throw new Error("failed to get class")
@@ -65,9 +70,9 @@ const classResolver = {
 
     getClasses: async(args, context) => {
        
-        // if(!context.isAdmin){
-        //     throw new Error("User is not admin")
-        // }
+        if(!context.isAdmin){
+            throw new Error("User is not admin")
+        }
 
         try{
             const classes  = await Class.find()
