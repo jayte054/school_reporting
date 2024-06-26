@@ -65,14 +65,14 @@ const classResolver = {
 
     getClasses: async(args, context) => {
        
-        if(!context.isAdmin){
-            throw new Error("User is not admin")
-        }
+        // if(!context.isAdmin){
+        //     throw new Error("User is not admin")
+        // }
 
         try{
             const classes  = await Class.find()
             console.log(classes)
-            const result = await classes.map((classDoc) =>  classTransform(classDoc))
+            const result = classes.map((classDoc) =>  classTransform(classDoc))
             console.log("result", result)
             return result
         }catch(error){

@@ -29,7 +29,8 @@ const studentResolver = {
                 fatherEmail: studentInput.fatherEmail,
                 mother: studentInput.email,
                 motherPhoneNumber: studentInput.motherPhoneNumber,
-                motherEmail: studentInput.motherEmail
+                motherEmail: studentInput.motherEmail,
+                address: studentInput.address
             })
 
             const newStudent = await student.save()
@@ -82,7 +83,8 @@ const studentResolver = {
                     fatherEmail: student.fatherEmail,
                     mother: student.email,
                     motherPhoneNumber: student.motherPhoneNumber,
-                    motherEmail: student.motherEmail
+                    motherEmail: student.motherEmail,
+                    address: student.address
                 })
              
             })

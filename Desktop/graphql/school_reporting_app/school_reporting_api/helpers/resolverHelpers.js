@@ -11,26 +11,38 @@ const classTransform = async( classDoc ) => {
     }
 }
 
+const getSubject = async(subjectId) => {
+    const subjects = await Subject.find({_id : {$in: subjectId }})
+    return subjects
+}
 // const getSubject = async(subjectId) => {
-//     const subjects = await Subject.find({_id : {$in: subjectId }})
+//     const subjects = await subjectLoader.loadMany(subjectId)
 //     return subjects
 // }
-const getSubject = new DataLoader(async(subjectId) => {
-    const subjects = await Subject.find({_id : {$in: subjectId}})
-    return subjects
-})
 
+const getStudent = async(studentId) => {
+    const student = await Student.find({_id: {$in: studentId}})
+    console.log(student)
+    return student
+}
 // const getStudent = async(studentId) => {
-//     const student = await Student.find({_id: {$in: studentId}})
-//     console.log(student)
+//     const student = await studentLoader.loadMany(studentId)
 //     return student
 // }
-const getStudent = new DataLoader(async(studentId) => {
-    const student = await Student.find({_id: {$in: studentId}})
-    return student
-})
 
+// const subjectLoader = new DataLoader((subjectId) => {
+//     // return Subject.find({_id : {$in: subjectId}})
+//     const subjects =  Subject.find({ _id: { $in: subjectIds } });
+//     const subjectMap = new Map(subjects.map(subject => [subject._id.toString(), subject]));
+//     return subjectId.map(id => subjectMap.get(id.toString()));
+// })
 
+// const studentLoader = new DataLoader((studentId) => {
+//     // return Student.find({_id: {$in: studentId}})
+//     const students =  Student.find({ _id: { $in: studentIds } });
+//     const studentMap = new Map(students.map(student => [student._id.toString(), student]));
+//     return studentId.map(id => studentMap.get(id.toString()));
+// })
 
 
 module.exports = {

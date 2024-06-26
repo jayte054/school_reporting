@@ -144,6 +144,7 @@ const SchoolReportsSchema = buildSchema(`
         mother: String
         motherPhoneNumber: Int
         motherEmail: String
+        address: String!
     }
 
     input updateStudentInput {
